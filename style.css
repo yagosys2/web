@@ -1,0 +1,42 @@
+h1 {
+  color: green;
+  text-align: center;
+}
+
+img {
+  background-color: teal;
+  width: 50%;
+  height: 50%;
+}
+
+div {
+  background-color: teal;
+  text-align: left;
+  width: 50%;
+  height: 50%;
+  margin: 10%;
+  padding: 2%;
+}
+
+table,
+th,
+td {
+  border: 2px solid black;
+  color: black;
+  background-color: yellow;
+  border-collapse: collapse;
+}
+
+#top {
+  font-size: 24px;
+}
+#middle {
+  font-size: 24px;
+}
+#bottom {
+  font-size: 24px;
+}
+.name {
+  font-weight: bold;
+  color: yellowgreen;
+}
