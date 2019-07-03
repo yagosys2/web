@@ -9,8 +9,18 @@ img {
   height: 50%;
 }
 
+button:hover {
+
+  background-color: orange;
+
+}
+
+p::selection {
+  background-color:yellow
+}
+
 input[type=text] {
-  color:blue
+  background-color:blue;
 }
 
 div {
