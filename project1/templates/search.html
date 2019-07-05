@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block content %}
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+         <fieldset>
+            <div class="form-group">
+                    {{ form.isbn.label }}
+                    {{ form.isbn(class="form-control") }}
+                    {% if res %}
+                        {{ res.title}}
+                        {{ res.author}}
+                   {% endif %}
+            </div>
+          
+           <div class="form-group">
+            <thread>
+                {% if review %}
+                    {{ review['books'][0]['average_rating']}}
+                {% endif %}
+            </thread>
+           </div>
+         </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+    </form>  
+{% endblock content %}
