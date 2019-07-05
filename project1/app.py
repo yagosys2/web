@@ -17,9 +17,22 @@ if not os.getenv("DATABASE_URL"):
 if not os.getenv('FLASK_CONFIG'):
     os.environ['FLASK_CONFIG'] = 'dev'
 
+http_proxy = os.getenv('HTTP_PROXY')
+if not http_proxy:
+    http_proxy = 'socks5h://127.0.0.1:6005'
 
-proxies = dict(http='socks5h://127.0.0.1:6005',
-               https='socks5h://127.0.0.1:6005')
+https_proxy = os.getenv('HTTPS_PROXY')
+if not https_proxy:
+    https_proxy = 'socks5h://127.0.0.1:6005'
+
+USE_PROXY = 1
+proxies = {}
+if USE_PROXY:
+    proxies = dict(http=http_proxy, https=https_proxy)
+
+
+# proxies = dict(http='socks5h://127.0.0.1:6005',
+#               https='socks5h://127.0.0.1:6005')
 
 # Configure session to use filesystem
 app.config["SESSION_PERMANENT"] = False
@@ -34,6 +47,8 @@ db = scoped_session(sessionmaker(bind=engine))
 
 users = {}
 posts = []
+# 0061053716
+# 0553262149
 
 
 @app.route("/")
@@ -115,3 +130,8 @@ def search():
             flash('not found')
         return render_template('search.html', title='search', form=form)
     return render_template('home.html')
+
+
+@app.route("/book", methods=['GET', 'POST'])
+def book():
+    return render_template('bookreview.html')
