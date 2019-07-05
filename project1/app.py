@@ -6,6 +6,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from forms import RegistrationForm, LoginForm, SearchForm
 from passlib.hash import pbkdf2_sha256
+import xmltodict
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
@@ -17,11 +18,11 @@ if not os.getenv("DATABASE_URL"):
 if not os.getenv('FLASK_CONFIG'):
     os.environ['FLASK_CONFIG'] = 'dev'
 
-http_proxy = os.getenv('HTTP_PROXY')
+http_proxy = os.getenv('http_proxy')
 if not http_proxy:
     http_proxy = 'socks5h://127.0.0.1:6005'
 
-https_proxy = os.getenv('HTTPS_PROXY')
+https_proxy = os.getenv('https_proxy')
 if not https_proxy:
     https_proxy = 'socks5h://127.0.0.1:6005'
 
@@ -30,7 +31,7 @@ proxies = {}
 if USE_PROXY:
     proxies = dict(http=http_proxy, https=https_proxy)
 
-
+print(proxies)
 # proxies = dict(http='socks5h://127.0.0.1:6005',
 #               https='socks5h://127.0.0.1:6005')
 
@@ -49,6 +50,7 @@ users = {}
 posts = []
 # 0061053716
 # 0553262149
+myuserid = '99387618'
 
 
 @app.route("/")
@@ -122,10 +124,21 @@ def search():
                 "SELECT * FROM books WHERE isbn LIKE :isbn", {"isbn": isbn}).fetchone()
             if res:
                 if res['isbn']:
-                    review = requests.get("https://www.goodreads.com/book/review_counts.json",
-                                          params={"key": "UnJEUENuYcvAB9ZAWrD7Q", "isbns": isbn}, proxies=proxies)
-                    review = review.json()
-                    return render_template('search.html', title='search', form=form, res=res, review=review)
+                    # review = requests.get("https://www.goodreads.com/book/review_counts.json",
+                     #                     params={"key": "UnJEUENuYcvAB9ZAWrD7Q", "isbns": isbn}, proxies=proxies)
+                    #review = review.json()
+                    resp = requests.get('https://www.goodreads.com/review/list.xml', params={
+                        'key': 'UnJEUENuYcvAB9ZAWrD7Q', 'v': 2, 'id': myuserid})
+                    description = ''
+                    if resp.status_code == 200:
+                        data_dict = xmltodict.parse(resp.content)[
+                            'GoodreadsResponse']
+                        review = data_dict['reviews']['review']
+                        for item in review:
+                            if (item['book']['isbn']) == isbn:
+                                book = item['book']
+                                #description = book['description']
+                    return render_template('search.html', title='search', form=form, res=res, book=book)
                 return render_template('search.html', title='search', form=form)
             flash('not found')
         return render_template('search.html', title='search', form=form)

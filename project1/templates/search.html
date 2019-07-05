@@ -14,8 +14,19 @@
           
            <div class="form-group">
             <thread>
-                {% if review %}
-                    {{ review['books'][0]['average_rating']}}
+                {% if book %}
+                    <p>
+                    {{ book['description'] }}
+                    </p>
+                    <p>
+                    {{ book['average_rating'] }}
+                    </p>
+                    {{ book['isbn13']}}
+                    <p>
+                    {{ book['image_url']}}
+                    </p>
+                    <img src =  {{ book['image_url']}} width=30% >
+                    
                 {% endif %}
             </thread>
            </div>
