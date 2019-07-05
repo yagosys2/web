@@ -7,10 +7,8 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from forms import RegistrationForm, LoginForm, SearchForm
 from passlib.hash import pbkdf2_sha256
 
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
-
 
 # Check for environment variable
 if not os.getenv("DATABASE_URL"):
@@ -107,11 +105,13 @@ def search():
             isbn = request.form.get("isbn")
             res = db.execute(
                 "SELECT * FROM books WHERE isbn LIKE :isbn", {"isbn": isbn}).fetchone()
-            if res['isbn']:
-                review = requests.get("https://www.goodreads.com/book/review_counts.json",
-                                      params={"key": "UnJEUENuYcvAB9ZAWrD7Q", "isbns": isbn}, proxies=proxies)
-                review = review.json()
-                return render_template('search.html', title='search', form=form, res=res, review=review)
-            return render_template('search.html', title='search', form=form)
+            if res:
+                if res['isbn']:
+                    review = requests.get("https://www.goodreads.com/book/review_counts.json",
+                                          params={"key": "UnJEUENuYcvAB9ZAWrD7Q", "isbns": isbn}, proxies=proxies)
+                    review = review.json()
+                    return render_template('search.html', title='search', form=form, res=res, review=review)
+                return render_template('search.html', title='search', form=form)
+            flash('not found')
         return render_template('search.html', title='search', form=form)
     return render_template('home.html')

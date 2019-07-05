@@ -32,6 +32,7 @@
           {% if session["logged_in"] == True %}
             <a href ='logout' >  logout </a> 
             <a href ='search' >  search </a> 
+            {{session["user_name"] }}
 
           {% endif %}
           {% if session["logged_in"] == False %}
