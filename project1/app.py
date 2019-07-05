@@ -129,7 +129,7 @@ def search():
                     #review = review.json()
                     resp = requests.get('https://www.goodreads.com/review/list.xml', params={
                         'key': 'UnJEUENuYcvAB9ZAWrD7Q', 'v': 2, 'id': myuserid})
-                    description = ''
+                    book = ''
                     if resp.status_code == 200:
                         data_dict = xmltodict.parse(resp.content)[
                             'GoodreadsResponse']
