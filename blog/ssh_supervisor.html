@@ -2,7 +2,7 @@
 	<head>
 		<body>
 			<h1> how to put ssh into supervisor </h1>
-			<p>
+			<p><br>
 ubuntu@VM-0-7-ubuntu:/etc/supervisor/conf.d$ cat ssh.conf
 [program:ssh]
 command=/usr/bin/ssh -D:6005 root@23.105.223.133 -p 27262
@@ -11,6 +11,7 @@ log_stdout=true
 log_stderr=true
 user=root
 startsecs=60
+			</br>
 			</p>
 			<p>
 			thing you have to prepare:
