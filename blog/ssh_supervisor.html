@@ -1,0 +1,31 @@
+<html>
+	<head>
+		<body>
+			<h1> how to put ssh into supervisor </h1>
+			<p><br>
+			<br>ubuntu@VM-0-7-ubuntu:/etc/supervisor/conf.d$ cat ssh.conf</br>
+			<br>[program:ssh]</br>
+			<br>command=/usr/bin/ssh -D:6005 root@23.105.223.133 -p 27262</br>
+			<br>autostart=true</br>
+			<br>log_stdout=true</br>
+			<br>log_stderr=true</br>
+			<br>user=root</br>
+			<br>startsecs=60</br>
+			</br>
+			</p>
+			<p>
+			thing you have to prepare:
+	
+	<ul>
+		<li> generate ssh_key on the client with ssh-keygen </li>
+		<li> use ssh-copy-id to the remote host </li>
+		<li> check error code on supervisor log ,one of the possible reason of 255 means remote site may not have root privildege to create a tunnel
+		</li>
+		
+	</ul>
+
+			</p>
+		</body>
+	</head>
+
+</html>
